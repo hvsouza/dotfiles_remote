@@ -1,0 +1,22 @@
+snippet cout "c++ cout" !b
+std::cout << $1 << std::endl;
+endsnippet
+
+snippet for "c++ for" !b
+for ( ${1:int i = 0}; ${1/\w+ (\w+) =.*/$1/} < ${2:n}; ${1/\w+ (\w+) =.*/$1/}++ ){ 
+	$4
+}
+endsnippet
+
+snippet if "c++ if" !b
+if ( $1 ){
+	$2
+}
+endsnippet
+
+snippet func "c++ function" !b
+$1( $2 ){
+	$3
+}
+endsnippet
+

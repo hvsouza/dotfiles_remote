@@ -1,0 +1,68 @@
+call plug#begin('~/.vim/plugged')
+
+" " Figitive Vim Github Wrapper
+Plug 'tpope/vim-fugitive'
+
+" Surround for vim
+Plug 'tpope/vim-surround'
+
+" Nerd tree
+Plug 'scrooloose/nerdtree'
+
+" Lightline statusbar==
+Plug 'itchyny/lightline.vim'
+
+" Dracula theme
+Plug 'dracula/vim', { 'as': 'dracula' }
+
+" Vim repeat, for better `.` command
+Plug 'tpope/vim-repeat'
+
+" Vim commentary, to comment with `g c c`
+Plug 'tpope/vim-commentary'
+
+
+
+" autor pair
+" Plug 'jiangmiao/auto-pairs'
+" Plug 'townk/vim-autoclose'
+
+" Well ..
+Plug 'CrossR/vim-fhicl'
+
+" Syntax package
+Plug 'sheerun/vim-polyglot'
+
+
+"{{ Syntax Highlighting and Colors }}
+Plug 'vim-python/python-syntax'                    " Python highlighting
+
+" Some closing tags for xml files
+Plug 'alvan/vim-closetag'
+
+" For fast change tags
+Plug 'andrewradev/tagalong.vim'
+
+" Well.. easy align
+Plug 'junegunn/vim-easy-align'
+
+" Vim undo tree
+Plug 'mbbill/undotree'
+
+" Show matches from search
+Plug 'google/vim-searchindex'
+
+" For jump in indentation
+Plug 'jeetsukumaran/vim-indentwise'
+
+" for moving easily :P
+Plug 'easymotion/vim-easymotion'
+
+if has('python3') && (py3eval('sys.version_info[1]') >= 7)
+    Plug 'davidhalter/jedi-vim'
+    Plug 'SirVer/ultisnips'
+endif
+
+call plug#end()
+
+
