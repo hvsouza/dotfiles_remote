@@ -1,0 +1,200 @@
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+alias dune_setup='source /cvmfs/dune.opensciencegrid.org/products/dune/setup_dune.sh'
+#export DUNETPC_VERSION=v09_22_02
+
+alias gocodes='cd /exp/dune/app/users/hsouza/'
+export CODES='/exp/dune/app/users/hsouza/'
+alias godata='cd /exp/dune/data/users/hsouza/'
+export DATA='/exp/dune/data/users/hsouza/'
+
+alias ls='ls --color=auto'
+alias ll='ls --color=auto -lhtr'
+alias root='root -l'
+
+alias myvim='vim --servername SERVER --remote'
+alias startvim='vim --servername SERVER'
+
+alias cppwd='pwd | xclip -sel c'
+
+export SCRATCH="/pnfs/dune/scratch/users/hsouza/"
+export ATMO="/pnfs/dune/persistent/users/pgranger/atm_50k_hd_AV_2.5_random/"
+
+PATH="${HOME}/localfake/bin:${PATH}"  
+#to show the where I am
+# export PS1="[\A]\w$ "
+# PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\][\A]\w\[\033[00m\]$ '
+export PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+export PS2='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\]@\[\033[01;31m\]\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+if [ ! $( cat /etc/os-release | grep -c Alma ) -gt 1 ]; then
+  export PS1=$PS2
+    PATH="${HOME}/.local/bin:${PATH}"  
+
+fi
+
+
+export HISTFILE=~/.history
+export HISTSIZE=100000
+export HISTFILESIZE=100000
+shopt -s histappend
+
+# for tmux italic
+# Install:
+#   tic screen-256color.terminfo
+# Usage:
+#   export TERM=screen-256color
+# export TERM=screen-256color
+export TERM=xterm-256color-italic
+
+
+# this avoid window from looking weird
+shopt -s checkwinsize
+
+# to complete tab on variables
+shopt -s direxpand
+
+
+# prevent Ctrl-s from freezing terminal
+[[ $- == *i* ]] && stty -ixon
+
+
+# for sarching forward with ctrl+t
+[[ $- == *i* ]] && bind "\C-t":forward-search-history
+
+# Ctrl-d for tmux off
+set -o ignoreeof
+
+# to complete tab on variables
+shopt -s direxpand
+
+
+VNCNUM=33
+export VNCNUM
+export ACTUALLYDISPLAY
+
+#VNC stuff
+toogle_vnc(){
+    if [ -z "$1"]; then
+        :
+    else
+        VNCNUM=$1
+    fi
+
+    if [[ $DISPLAY != "localhost:$VNCNUM" ]]; then
+        if [[ `hostname` == *"gpvm"* ]]; then
+            export DISPLAY=localhost:$VNCNUM
+            if [ `lsof -i -P -n | grep $(expr 5900 + ${VNCNUM}) | wc -l` -eq 0 -o `lsof -i -P -n | grep $(expr 6000 + ${VNCNUM}) | wc -l` -eq 0 ]; then
+                echo "vncserver :$VNCNUM not running. Starting now..."
+                vncserver :$VNCNUM -localhost -bs -geometry 1860x950 
+            else
+                echo "vncserver :$VNCNUM already running (hopefully owned by you). Not attempting to start the vncserver"
+            fi
+        fi
+    else
+        echo "Display set to $ACTUALLYDISPLAY"
+        export DISPLAY=$ACTUALLYDISPLAY
+        # vncserver -kill :$VNCNUM
+    fi
+
+}
+
+updatedisplay() {
+    display=${1:-10}
+    export DISPLAY=localhost:${display}.0
+}
+
+build () {
+	cd $MRB_BUILDDIR
+	ninja install
+	cd -
+}
+
+cpls () {
+	readlink -f $@
+}
+
+setup_env () {
+	if [ "$#" -ne 1 ]; then
+		echo "Usage: $0 ENV_NAME"
+		return 0
+	fi
+
+	ENV_NAME=$1
+
+	case "$ENV_NAME" in
+		("pandora") setup dunesw v09_69_01d00 -q debug:e20 && source /exp/dune/app/users/pgranger/pandora/localProducts_larsoft_v09_69_01_debug_e20/setup ;;
+		("vanilla") setup dunesw v09_75_00d00 -q debug:e20 && return 0 ;;
+		("atmo_prod") setup dunesw v09_89_01d01 -q prof:e26 && return 0 ;;
+		(*)         echo "Unknown env $ENV_NAME" && return 0 ;;
+	esac
+
+	mrbslp
+	mrbsetenv
+}
+
+run_voms(){
+    echo "voms-proxy-init -rfc -noregen -voms=dune:/dune/Role=Analysis -valid 180:00"
+    voms-proxy-init -rfc -noregen -voms=dune:/dune/Role=Analysis -valid 180:00
+}
+set_hadd_files(){
+    cpwd=$( pwd )
+    filename='merged.root'
+    filetype='*.root'
+    create_list=true
+    funcname=$FUNCNAME
+    Help(){
+        echo "Usage: $funcname \"filetype\" \"filename\""
+        echo "filetype is optional, standard is '*.root'"
+        echo "filename is optional, standard is 'merged.root'"
+        echo "create_list is optional, standard is true (true or false)"
+    }
+
+	if [ ! -z "$1" ]; then
+        if [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
+            Help
+            return 0
+        fi
+        filetype=$1
+	fi
+	if [ ! -z "$2" ]; then
+        filename=$2
+	fi
+
+    if [ ! -z "$3" ]; then
+        create_list=$3
+    fi
+    if [ "$create_list" = true ]; then
+        rm fileshadd.list
+        find $cpwd -name "$filetype" | sed 's#/pnfs/dune/#root://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/dune/#' > fileshadd.list
+        sed -i 's#/pnfs/dune/#root://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/dune/#' fileshadd.list
+    fi
+    semipath=$( pwd | sed 's#/pnfs/dune/#root://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/dune/#' )
+    echo "Done creating file"
+    echo "Executing: "
+    run_voms
+    echo "hadd -f $semipath/$filename @fileshadd.list"
+    hadd -f $semipath/$filename @fileshadd.list
+}
+
+run_container(){
+    if [[ `hostname` == *"gpvm"* ]]; then
+        /cvmfs/oasis.opensciencegrid.org/mis/apptainer/current/bin/apptainer shell --shell=/bin/bash -B /cvmfs,/exp,/nashome,/pnfs/dune,/opt,/run/user,/etc/hostname,/etc/hosts,/etc/krb5.conf --env "PS1=$PS2" --env "PATH=$PATH" --env "LD_LIBRARY_PATH=$LD_LIBRARY_PATH" --ipc --pid /cvmfs/singularity.opensciencegrid.org/fermilab/fnal-dev-sl7:latest
+    else # for dunebuild
+        /cvmfs/oasis.opensciencegrid.org/mis/apptainer/current/bin/apptainer shell --shell=/bin/bash -B /cvmfs,/exp,/nashome,/opt,/run/user,/etc/hostname,/etc/hosts,/etc/krb5.conf --env "PS1=$PS2" --env "PATH=$PATH" --env "LD_LIBRARY_PATH=$LD_LIBRARY_PATH" --ipc --pid /cvmfs/singularity.opensciencegrid.org/fermilab/fnal-dev-sl7:latest
+    fi
+}
+
+if [ -n "$TMUX" ]; then
+    if [ $( cat /etc/os-release | grep -c alma ) -gt 1 ]; then
+        run_container
+    fi
+fi
+
+dune_setup
+
+export LS_COLORS="rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:"
