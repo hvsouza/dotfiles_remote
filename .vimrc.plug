@@ -58,6 +58,9 @@ Plug 'jeetsukumaran/vim-indentwise'
 " for moving easily :P
 Plug 'easymotion/vim-easymotion'
 
+" Copilot
+Plug 'github/copilot.vim'
+
 if has('python3') && (py3eval('sys.version_info[1]') >= 7)
     Plug 'davidhalter/jedi-vim'
     Plug 'SirVer/ultisnips'

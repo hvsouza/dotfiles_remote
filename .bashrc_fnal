@@ -181,6 +181,12 @@ set_hadd_files(){
     hadd -f $semipath/$filename @fileshadd.list
 }
 
+dune_depend(){
+    version=${1:-v09_89_01d01}
+    quals=${2:-prof:e26}
+    ups depend dunesw $version -q $quals
+}
+
 run_container(){
     if [[ `hostname` == *"gpvm"* ]]; then
         /cvmfs/oasis.opensciencegrid.org/mis/apptainer/current/bin/apptainer shell --shell=/bin/bash -B /cvmfs,/exp,/nashome,/pnfs/dune,/opt,/run/user,/etc/hostname,/etc/hosts,/etc/krb5.conf --env "PS1=$PS2" --env "PATH=$PATH" --env "LD_LIBRARY_PATH=$LD_LIBRARY_PATH" --ipc --pid /cvmfs/singularity.opensciencegrid.org/fermilab/fnal-dev-sl7:latest
