@@ -93,7 +93,6 @@ set ttyfast
 set laststatus=2
 
 " Display options
-set showmode
 set showcmd
 
 " Highlight matching pairs of brackets. Use the '%' character to jump between them.
@@ -139,26 +138,13 @@ autocmd BufRead,BufNewFile *.C set filetype=cpp
 " Running with VNC was fast, but without it was slow. This solves the proble:
 " https://stackoverflow.com/questions/14635295/vim-takes-a-very-long-time-to-start-up
 set clipboard^=exclude:.*
-
-" Call the .vimrc.plug file
-if filereadable(expand("~/.vimrc.plug"))
-    source ~/.vimrc.plug
-endif
-" Remap for NERDTree
-noremap <leader>n :NERDTreeFocus<CR>
-noremap <C-n> :NERDTree<CR>
-noremap <C-t> :NERDTreeToggle<CR>
-let NERDTreeShowLineNumbers=1
-let NERDTreeShowHidden=1
-let NERDTreeMinimalUI = 1
-let g:NERDTreeWinSize=38
-
 " Allo mouse using inside vim, F3 to toogle it
 set mouse=a
 map <F3> <ESC>:exec &mouse!=""? "set mouse=" : "set mouse=nvi"<CR>
 
 " get rid of the annoying Ex mode
 nnoremap Q <Nop>
+nnoremap q: <Nop>
 
 " Disable numbers for better copying and paste
 silent! map <F10> :set invnumber invrelativenumber <CR>
@@ -186,22 +172,33 @@ inoremap [<CR> [<CR>]<C-c>O
 set autochdir
 
 
-" The lightline.vim theme
-let g:lightline = {
-            \ 'colorscheme': 'dracula',
-            \ }
+autocmd VimLeave,VimSuspend * call system("xsel -ib", getreg('+'))
 
+" Call the .vimrc.plug file
+if filereadable(expand("~/.vimrc.plug"))
+    source ~/.vimrc.plug
+endif
+" Remap for NERDTree
+nnoremap <leader>n :NERDTreeFocus<CR>
+" nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+let NERDTreeShowLineNumbers=1
+let NERDTreeShowHidden=1
+let NERDTreeMinimalUI = 1
+let g:NERDTreeWinSize=38
+
+
+" The lightline.vim theme
+let g:lightline = {'colorscheme': 'dracula' }
 let g:dracula_italic = 1
-let g:dracula_bold = 1
-let g:dracula_colorterm = 1
+let g:dracula_colorterm = 1 " for terminator
+
 colorscheme dracula
 
 
 " Turn on syntax highlighting.
 syntax enable
 
-" provide path directly to the library file
-" let g:clang_library_path='/cvmfs/larsoft.opensciencegrid.org/products/clang/v7_0_0/Linux64bit+2.6-2.12/lib/libclang.so.7'
 
 
 " Use a line cursor within insert mode and a block cursor everywhere else.
@@ -228,7 +225,7 @@ let &t_ZR="\e[23m"
 
 " Use <C-L> to clear the highlighting of :set hlsearch.
 if maparg('<C-G>', 'n') ==# ''
-  nnoremap <silent> <C-G> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+    nnoremap <silent> <C-G> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
 endif
 
 
@@ -287,7 +284,7 @@ au BufRead,BufNewFile *.py set expandtab
 
 " For persistent undo tree
 if has("persistent_undo")
-   let target_path = expand('~/.undodir')
+    let target_path = expand('~/.undodir')
 
     " create the directory and any parent directories
     " if the location does not exist.
@@ -299,8 +296,6 @@ if has("persistent_undo")
     set undofile
 endif
 set undofile
-
-" Doing again because of polyglot
 set smarttab
 set tabstop=4
 set shiftwidth=4
