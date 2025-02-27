@@ -4,4 +4,4 @@ vim.g.lightline = {
 }
 vim.cmd('colorscheme dracula')
 
--- require("bufferline").setup{}
+require("lualine").setup{}

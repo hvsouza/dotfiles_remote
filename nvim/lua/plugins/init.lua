@@ -15,8 +15,12 @@ return {
 	-- add dracula
 	{ 'dracula/vim' , name='dracula', priority = 10000},
 
-	-- Lightline statusbar==
-	{ 'itchyny/lightline.vim' },
+	-- -- Lightline statusbar==
+	-- { 'itchyny/lightline.vim' },
+	{
+		'nvim-lualine/lualine.nvim',
+		dependencies = { 'nvim-tree/nvim-web-devicons', opt = true }
+	},
 
 	-- Vim repeat
 	{ 'tpope/vim-repeat' },
@@ -27,8 +31,8 @@ return {
 	-- Well ..
 	{ 'CrossR/vim-fhicl' },
 
-	-- Some cool syntax
-	{ 'sheerun/vim-polyglot' }, 
+    -- Syntax package
+    {'sheerun/vim-polyglot'},
 
 	-- Well.. easy align
 	{ 'junegunn/vim-easy-align' },
@@ -46,13 +50,30 @@ return {
 	{ 'nvim-lua/plenary.nvim' },
 	{ 'nvim-telescope/telescope.nvim' , tag='0.1.8' },
 	{ 'nvim-telescope/telescope-file-browser.nvim' },
+	{ 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
 
 	-- { 'lervag/vimtex' },
 
-	{ 'SirVer/ultisnips', event = { 'InsertEnter' } },
+	{ 'SirVer/ultisnips', --, event = { 'InsertEnter' } },
+	lazy = false,
+	init = function()
+		vim.g.UltiSnipsExpandOrJumpTrigger = '<tab>'
+		vim.g.UltiSnipsJumpBackwardTrigger = '<s-tab>'
+	end
+	},
 
-	-- -- Copilot
-	-- {"github/copilot.vim"},
+	-- Copilot
+	{
+		"github/copilot.vim",
+		config = function()
+			vim.keymap.set('i', '<C-J>', 'copilot#Accept("\\<CR>")', {
+				expr = true,
+				replace_keycodes = false
+			})
+			vim.g.copilot_no_tab_map = true
+
+		end,
+	},
 
 
 	-- Which key
@@ -95,6 +116,10 @@ return {
 		main = "ibl",
 		opts = {
 			indent = { char = "┊" },
+			scope = {
+				show_start = false,
+				show_end = false,
+			},
 		},
 	},
 
@@ -144,7 +169,26 @@ return {
 				-- your configuration comes here
 				-- or leave it empty to use the default settings
 				-- refer to the configuration section below
+				{
+					modes = {
+						preview_float = {
+							mode = "diagnostics",
+							preview = {
+								type = "float",
+								relative = "editor",
+								border = "rounded",
+								title = "Preview",
+								title_pos = "center",
+								position = { 0, -2 },
+								size = { width = 0.3, height = 0.3 },
+								zindex = 200,
+							},
+						},
+					},
+				}
 			}
 		end
 	},
 }
+
+

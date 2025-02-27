@@ -1,3 +1,6 @@
+-- Enable telescope fzf native, if installed
+pcall(require('telescope').load_extension, 'fzf')
+
 vim.keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<cr>', { desc = 'Search files' } )
 vim.keymap.set('n', '<leader>fg', '<cmd>Telescope live_grep<cr>', { desc = 'Search by grep' } )
 vim.keymap.set('n', '<leader>bb', '<cmd>Telescope buffers<cr>', { desc = 'Find existing buffers' } )

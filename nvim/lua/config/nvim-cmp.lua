@@ -24,8 +24,8 @@ cmp.setup({
     documentation = cmp.config.window.bordered(),
   },
   mapping = cmp.mapping.preset.insert({
-    ["<C-k>"] = cmp.mapping.select_prev_item(), -- previous suggestion
-    ["<C-j>"] = cmp.mapping.select_next_item(), -- next suggestion
+    -- ["<C-k>"] = cmp.mapping.select_prev_item(), -- previous suggestion
+    -- ["<C-j>"] = cmp.mapping.select_next_item(), -- next suggestion
     ["<C-b>"] = cmp.mapping.scroll_docs(-4),
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
     ["<C-Space>"] = cmp.mapping.complete(), -- show completion suggestions
@@ -34,7 +34,7 @@ cmp.setup({
   }),
   -- sources for autocompletion
   sources = cmp.config.sources({
-    -- { name = "copilot" },
+    { name = "copilot" },
 	{ name = 'nvim_lsp' },
     { name = "luasnip" }, -- snippets
     { name = "buffer" }, -- text within current buffer
@@ -76,3 +76,21 @@ nvim_lsp.lua_ls.setup {
     },
   },
 }
+
+nvim_lsp.pyright.setup {}
+-- nvim_lsp.pylsp.setup{
+-- 	settings = {
+-- 		pylsp = {
+-- 			plugins = {
+-- 				pycodestyle = {
+-- 					-- ignore = {'E501'},
+-- 					maxLineLength = 120
+-- 				}
+-- 			}
+-- 		}
+-- 	}
+-- }
+nvim_lsp.cmake.setup{}
+nvim_lsp.jsonls.setup{}
+
+

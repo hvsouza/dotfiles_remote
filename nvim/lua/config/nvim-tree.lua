@@ -5,6 +5,9 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
 nvimtree.setup({
+  sync_root_with_cwd = true,
+  reload_on_bufenter = true,
+  respect_buf_cwd = true,
   view = {
     width = 35,
     relativenumber = true,
@@ -14,14 +17,6 @@ nvimtree.setup({
     indent_markers = {
       enable = true,
     },
-    icons = {
-      glyphs = {
-        folder = {
-          arrow_closed = "", -- arrow when folder is closed
-          arrow_open = "", -- arrow when folder is open
-        },
-      },
-    },
   },
   -- disable window_picker for
   -- explorer to work well with
@@ -29,10 +24,16 @@ nvimtree.setup({
   actions = {
     open_file = {
       window_picker = {
-        enable = false,
+        enable = true,
       },
     },
   },
+  -- update_focused_file = {
+	-- enable = true,
+	-- -- update_root = {
+	-- --   enable = true
+	-- -- },
+  -- },
   filters = {
     custom = { ".DS_Store" },
   },

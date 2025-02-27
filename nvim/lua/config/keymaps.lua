@@ -48,7 +48,7 @@ vim.keymap.set("i", "[<CR>", "[<CR>]<C-c>O")
 vim.keymap.set({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
 vim.keymap.set({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
 vim.keymap.set("n", "^", "g^")
-vim.keymap.set("n", "0", "g0")
+-- vim.keymap.set("n", "0", "g0")
 
 
 -- Resize window using <ctrl> arrow keys
@@ -56,6 +56,13 @@ vim.keymap.set("n", "<C-Up>", "<cmd>resize +1<cr>", { desc = "Increase window he
 vim.keymap.set("n", "<C-Down>", "<cmd>resize -1<cr>", { desc = "Decrease window height" })
 vim.keymap.set("n", "<C-Left>", "<cmd>vertical resize -1<cr>", { desc = "Decrease window width" })
 vim.keymap.set("n", "<C-Right>", "<cmd>vertical resize +1<cr>", { desc = "Increase window width" })
+
+-- Move to window using the <ctrl> hjkl keys
+vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Go to left window", remap = true })
+vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Go to lower window", remap = true })
+vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Go to upper window", remap = true })
+vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Go to right window", remap = true })
+
 
 -- Better indenting
 vim.keymap.set("v", "<", "<gv")
@@ -76,6 +83,9 @@ vim.keymap.set("n", "<leader>y", "<cmd>%yank<cr>", { desc = "yank entire buffer"
 vim.keymap.set('n', 'q:', '<Nop>')
 vim.keymap.set('n', 'q/', '<Nop>')
 vim.keymap.set('n', 'q?', '<Nop>')
+
+-- Quit
+vim.keymap.set("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit all" })
 
 
 -- Better order for wide menu
