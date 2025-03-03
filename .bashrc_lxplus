@@ -1,0 +1,175 @@
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+alias myvim='vim --servername SERVER --remote'
+alias startvim='vim --servername SERVER'
+
+alias cppwd='echo -n $( pwd ) | xclip -sel c'
+alias ls='ls --color=auto'
+alias ll='ls --color=auto -lhtr'
+alias ncdu='ncdu --color=dark'
+
+
+#to show the where I am
+export PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+
+HISTSIZE=60000
+HISTFILESIZE=60000
+
+# for tmux italic
+# Install:
+#   tic xterm-256color-italic.terminfo
+export TERM=xterm-256color
+
+export COLORTERM=truecolor
+
+
+# this avoid window from looking weird
+shopt -s checkwinsize
+
+# Prevents ctrl+d from closing terminal
+set -o ignoreeof
+
+# prevent Ctrl-s from freezing terminal
+[[ $- == *i* ]] && stty -ixon
+
+# for sarching forward with ctrl+t
+[[ $- == *i* ]] && bind "\C-t":forward-search-history
+
+# User specific aliases and functions
+alias gohome='cd /eos/home-h/hvieirad'
+export CERNBOX='/eos/home-h/hvieirad'
+
+alias goxe='cd /eos/home-n/ngallice/4Henrique'
+
+alias gocold='cd /eos/experiment/neutplatform/protodune/experiments/ColdBoxVD'
+export COLD='/eos/experiment/neutplatform/protodune/experiments/ColdBoxVD'
+
+PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+
+alias root='root -l'
+
+alias myclass="source /eos/home-h/hvieirad/cold_box_analysis/apc_root/cold_box_analysis/class/load_my_class.sh"
+
+alias anasol="source /eos/home-h/hvieirad/WVFAnaSoLAr/class/load_ana_class.sh"
+export solclass="/eos/home-h/hvieirad/WVFAnaSoLAr/class/"
+export SOLAR="/eos/home-h/hvieirad/solars/"
+export datasolar="/eos/experiment/dune/solar/data/SoLAr_v2/"
+
+alias gocodes='cd /eos/home-h/hvieirad/cold_box_analysis/apc_root/cold_box_analysis/class/'
+export CODES='/eos/home-h/hvieirad/cold_box_analysis/apc_root/cold_box_analysis/class'
+
+
+export BICOCCA='/eos/home-c/ccattado/FD1XA/data/'
+alias setuproot='source /cvmfs/sft.cern.ch/lcg/views/LCG_105/x86_64-el9-gcc11-opt/setup.sh'
+
+export WORK='/afs/cern.ch/work/h/hvieirad/public/'
+
+export PDS='/eos/home-h/hvieirad/daq_decoder/PDS/scripts/'
+
+export HDRUCIO='/eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/PDS_Commissioning/waffles/1_rucio_paths/'
+
+export HDWAFFLES='/eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/PDS_Commissioning/waffles/'
+
+export WAFFLES='/eos/home-h/hvieirad/waffles/'
+export WAFFLES_DIR='/eos/home-h/hvieirad/waffles/waffles/src/waffles/'
+
+export dotfiles='/eos/home-h/hvieirad/dotfiles_remote/'
+
+# to complete tab on variables
+shopt -s direxpand
+
+VNCNUM=4
+export VNCNUM
+export ACTUALLYDISPLAY
+
+
+#VNC stuff
+toogle_vnc(){
+    if [ -z "$1" ]; then
+        :
+    else
+        VNCNUM=$1
+    fi
+
+    if [[ $DISPLAY != "localhost:$VNCNUM" ]]; then
+        if [[ `hostname` == *"lxplus"* ]]; then
+            export DISPLAY=localhost:$VNCNUM
+            if [ `lsof -i -P -n | grep $(expr 5900 + ${VNCNUM}) | wc -l` -eq 0 -o `lsof -i -P -n | grep $(expr 6000 + ${VNCNUM}) | wc -l` -eq 0 ]; then
+                echo "vncserver :$VNCNUM not running. Starting now..."
+                vncserver :$VNCNUM -localhost -bs -geometry 1860x950
+            else
+                echo "vncserver :$VNCNUM already running (hopefully owned by you). Not attempting to start the vncserver"
+            fi
+        fi
+    else
+        echo "Display set to $ACTUALLYDISPLAY"
+        export DISPLAY=$ACTUALLYDISPLAY
+        vncserver -kill :$VNCNUM
+    fi
+
+}
+
+cpls () {
+	readlink -f "$@" | xclip -sel c
+	readlink -f "$@"
+}
+
+runtmux() {
+	systemctl --user start tmux.service
+    # systemctl --user enable --now tmux.service
+}
+
+export VNC_DISPLAY=52927
+export VNC_PORT=58827
+
+# ssh  -L   ${VNC_PORT}:localhost:${VNC_PORT}  hvieirad@lxplus.cern.ch
+runvnc () {
+    systemctl --user start vncserver@${VNC_DISPLAY}.service
+    export DISPLAY=:${VNC_DISPLAY}
+}
+stopvnc() {
+    systemctl --user stop vncserver@${VNC_DISPLAY}.service
+}
+
+runjupyter() {
+    token=${1:-""}
+    myport=${2:-$VNC_PORT}
+    if [ ! -z "${token}" ]; then
+        token=--IdentityProvider.token=\'${token}\'
+    fi
+    echo $token
+    jupyter-notebook  --no-browser --port $VNC_PORT $token
+}
+
+updatedisplay() {
+    display=${1:-10}
+    export DISPLAY=localhost:${display}.0
+}
+
+
+fastpath(){
+    echo $( readlink -f $1 | sed  's#/eos/home-\(.\)/#root://eosuser.cern.ch//eos/user/\1/#')
+}
+
+froot() {
+    rootfile=${1:-analyzed.root}
+    rootfile=$( fastpath $rootfile )
+    root -l $rootfile
+}
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+source /afs/cern.ch/user/h/hvieirad/.local/include/source_solar_env.sh
+
+export LS_COLORS="rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:" 
+
+
+
