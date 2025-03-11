@@ -24,6 +24,7 @@ alias cppwd='pwd | xclip -sel c'
 
 export SCRATCH="/pnfs/dune/scratch/users/hsouza/"
 export ATMO="/pnfs/dune/persistent/users/pgranger/atm_50k_hd_AV_2.5_random/"
+export dotfiles='/exp/dune/app/users/hsouza/dotfiles/'
 
 PATH="${HOME}/localfake/bin:${PATH}"  
 #to show the where I am
@@ -49,7 +50,8 @@ shopt -s histappend
 # Usage:
 #   export TERM=screen-256color
 # export TERM=screen-256color
-export TERM=xterm-256color-italic
+export TERM=xterm-256color
+export COLORTERM=truecolor
 
 
 # this avoid window from looking weird
