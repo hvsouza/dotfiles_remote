@@ -35,7 +35,7 @@ nvimtree.setup({
 	-- -- },
   -- },
   filters = {
-    custom = { ".DS_Store" },
+    custom = { ".DS_Store", "*.d", "*.so", "*.pcm", "__pycache__"},
   },
   git = {
     ignore = false,

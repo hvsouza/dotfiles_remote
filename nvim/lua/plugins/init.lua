@@ -52,7 +52,6 @@ return {
 	{ 'nvim-telescope/telescope-file-browser.nvim' },
 	{ 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
 
-	-- { 'lervag/vimtex' },
 
 	{ 'SirVer/ultisnips', --, event = { 'InsertEnter' } },
 	lazy = false,
@@ -108,7 +107,6 @@ return {
 		},
 	},
 
-
 	-- Indent guide
 	{
 		"lukas-reineke/indent-blankline.nvim",
@@ -148,17 +146,17 @@ return {
 	-- LSP
 	{
 		"ray-x/lsp_signature.nvim",
-		event = "InsertEnter",
-		opts = {
-			bind = true,
-			handler_opts = {
-				border = "rounded"
-			},
-			hint_prefix = "🧙‍♂️ ",
-		},
-		config = function(_, opts)
-			require'lsp_signature'.on_attach(opts)
-		end
+		-- event = "InsertEnter",
+		-- opts = {
+		-- 	bind = true,
+		-- 	handler_opts = {
+		-- 		border = "rounded"
+		-- 	},
+		-- 	hint_prefix = "🧙‍♂️ ",
+		-- },
+		-- config = function(_, opts)
+		-- 	require'lsp_signature'.on_attach(opts)
+		-- end
 	},
 
 	{

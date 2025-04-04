@@ -20,7 +20,7 @@ alias root='root -l'
 alias myvim='vim --servername SERVER --remote'
 alias startvim='vim --servername SERVER'
 
-alias cppwd='pwd | xclip -sel c'
+alias cppwd="pwd | tr -d '\n' | xclip -sel c"
 
 export SCRATCH="/pnfs/dune/scratch/users/hsouza/"
 export ATMO="/pnfs/dune/persistent/users/pgranger/atm_50k_hd_AV_2.5_random/"
@@ -117,6 +117,7 @@ build () {
 }
 
 cpls () {
+	readlink -f $@ | xclip -sel c
 	readlink -f $@
 }
 

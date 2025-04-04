@@ -4,6 +4,9 @@ local luasnip = require("luasnip")
 
 local nvim_lsp = require("lspconfig")
 
+require('lsp_signature').setup({
+  hint_prefix = " ",
+})
 vim.keymap.set({ 'i' }, '<C-n>', function ()
   require"lsp_signature".select_signature_key()
 end, { silent = true, noremap = true, desc = 'select signature' })
