@@ -1,5 +1,6 @@
 vim.keymap.set("n", "<Space>", "<Nop>", { silent = true, remap = false })
 vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
 -- General Keymaps -------------------
 
@@ -78,6 +79,17 @@ vim.keymap.set("x", "$", "g_")
 
 -- Copy entire buffer.
 vim.keymap.set("n", "<leader>y", "<cmd>%yank<cr>", { desc = "yank entire buffer" })
+-- Copy to clipboard
+vim.keymap.set('v', '<leader>y', '"+y', { desc = 'Visual mode yank to clipboard' })
+vim.keymap.set('n', '<leader>Y', '"+yg_', { desc = 'Normal mode yank line to clipboard' })
+vim.keymap.set('n', '<leader>y', '"+y', { desc = 'Normal mode yank to clipboard' })
+vim.keymap.set('n', '<leader>yy', '"+yy', { desc = 'Normal mode yank all line to clipboard' })
+
+-- Paste from clipboard
+vim.keymap.set('n', '<leader>p', '"+p', { desc = 'Paste from clipboard' })
+vim.keymap.set('n', '<leader>P', '"+P', { desc = 'Paste in-place from clipboard' })
+vim.keymap.set('v', '<leader>p', '"+p', { desc = 'Paste from clipboard' })
+vim.keymap.set('v', '<leader>P', '"+P', { desc = 'Paste in-place from clipboard' })
 
 -- Disable command-line window
 vim.keymap.set('n', 'q:', '<Nop>')
@@ -91,10 +103,10 @@ vim.keymap.set("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit all" })
 
 -- Better order for wide menu
 vim.cmd([[
-  cnoremap <expr> <Up>    pumvisible() ? "\<Left>"  : "\<Up>"
-  cnoremap <expr> <Down>  pumvisible() ? "\<Right>" : "\<Down>"
-  cnoremap <expr> <Left>  pumvisible() ? "\<Up>"    : "\<Left>"
-  cnoremap <expr> <Right> pumvisible() ? "\<Down>"  : "\<Right>"
+    cnoremap <expr> <Up>    pumvisible() ? "\<Left>"  : "\<Up>"
+    cnoremap <expr> <Down>  pumvisible() ? "\<Right>" : "\<Down>"
+    cnoremap <expr> <Left>  pumvisible() ? "\<Up>"    : "\<Left>"
+    cnoremap <expr> <Right> pumvisible() ? "\<Down>"  : "\<Right>"
 ]])
 
 -- Fix my cazzate
