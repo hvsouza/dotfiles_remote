@@ -75,8 +75,8 @@ export HDRUCIO='/eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/
 
 export HDWAFFLES='/eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/PDS_Commissioning/waffles/'
 
-export WAFFLES='/eos/home-h/hvieirad/waffles/'
-export WAFFLES_DIR='/eos/home-h/hvieirad/waffles/waffles/src/waffles/'
+export WAFFLES='/eos/home-h/hvieirad/waffles/waffles/src/waffles/'
+export WAFFLESANA='/eos/home-h/hvieirad/waffles/analysis/'
 
 export dotfiles='/eos/home-h/hvieirad/dotfiles_remote/'
 
