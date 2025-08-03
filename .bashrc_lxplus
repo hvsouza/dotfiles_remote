@@ -48,6 +48,7 @@ alias goxe='cd /eos/home-n/ngallice/4Henrique'
 
 alias gocold='cd /eos/experiment/neutplatform/protodune/experiments/ColdBoxVD'
 export COLD='/eos/experiment/neutplatform/protodune/experiments/ColdBoxVD'
+export DATAVD='/eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-VD/'
 
 PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 

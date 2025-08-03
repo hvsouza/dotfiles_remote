@@ -3,7 +3,7 @@ Rint.Load:               rootalias.C
 Rint.Logon:              rootlogon.C
 Rint.Logoff:             rootlogoff.C
 Rint.History:            $(HOME)/.root_hist
-Rint.HistSize:         100000
+Rint.HistSize:         10000000
 Rint.HistSave:         -1
 Rint.Includes:      1
 Root.Fitter:             Minuit
