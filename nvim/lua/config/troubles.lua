@@ -25,4 +25,6 @@ vim.diagnostic.config({
             [vim.diagnostic.severity.HINT]  = "",
         },
     },
+    update_in_insert = true, -- another options is `set signcolumns=yes`
 })
+

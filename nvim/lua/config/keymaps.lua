@@ -78,7 +78,7 @@ vim.keymap.set("x", "$", "g_")
 
 
 -- Copy entire buffer.
-vim.keymap.set("n", "<leader>y", "<cmd>%yank<cr>", { desc = "yank entire buffer" })
+-- vim.keymap.set("n", "<leader>y", "<cmd>%yank<cr>", { desc = "yank entire buffer" })
 -- Copy to clipboard
 vim.keymap.set('v', '<leader>y', '"+y', { desc = 'Visual mode yank to clipboard' })
 vim.keymap.set('n', '<leader>Y', '"+yg_', { desc = 'Normal mode yank line to clipboard' })

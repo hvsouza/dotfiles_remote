@@ -18,14 +18,14 @@ return {
   },
 
   config = function()
-    -- import lspconfig plugin
-    local lspconfig = require("lspconfig")
+    -- -- import lspconfig plugin
+    -- local lspconfig = require("lspconfig")
 
-    -- import mason_lspconfig plugin
-    local mason_lspconfig = require("mason-lspconfig")
+    -- -- import mason_lspconfig plugin
+    -- local mason_lspconfig = require("mason-lspconfig")
 
-    -- import cmp-nvim-lsp plugin
-    local cmp_nvim_lsp = require("cmp_nvim_lsp")
+    -- -- import cmp-nvim-lsp plugin
+    -- local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
     local keymap = vim.keymap -- for conciseness
 
@@ -45,6 +45,7 @@ return {
 
         opts.desc = "Show LSP definitions"
         keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
+        keymap.set("n", "<F12>", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
 
         opts.desc = "Show LSP implementations"
         keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
@@ -79,16 +80,16 @@ return {
     })
 
     -- used to enable autocompletion (assign to every lsp server config)
-    local capabilities = cmp_nvim_lsp.default_capabilities()
+    -- local capabilities = cmp_nvim_lsp.default_capabilities()
 
 
-    mason_lspconfig.setup_handlers({
-      -- default handler for installed servers
-      function(server_name)
-        lspconfig[server_name].setup({
-          capabilities = capabilities,
-        })
-      end,
-    })
+    -- mason_lspconfig.setup_handlers({
+    --   -- default handler for installed servers
+    --   function(server_name)
+    --     lspconfig[server_name].setup({
+    --       capabilities = capabilities,
+    --     })
+    --   end,
+    -- })
   end,
 }

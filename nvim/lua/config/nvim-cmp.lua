@@ -57,7 +57,10 @@ nvim_lsp.clangd.setup {
 	}
 }
 
-nvim_lsp.lua_ls.setup {
+-- nvim_lsp.lua_ls.setup {
+vim.lsp.config('lua_ls',
+  {
+  capabilities = capabilities,
   settings = {
     Lua = {
       runtime = {
@@ -79,21 +82,10 @@ nvim_lsp.lua_ls.setup {
     },
   },
 }
+)
+
 
 nvim_lsp.pyright.setup {}
--- nvim_lsp.pylsp.setup{
--- 	settings = {
--- 		pylsp = {
--- 			plugins = {
--- 				pycodestyle = {
--- 					-- ignore = {'E501'},
--- 					maxLineLength = 120
--- 				}
--- 			}
--- 		}
--- 	}
--- }
 nvim_lsp.cmake.setup{}
 nvim_lsp.jsonls.setup{}
-
 

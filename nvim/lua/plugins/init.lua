@@ -47,11 +47,23 @@ return {
 	{ 'easymotion/vim-easymotion' },
 
 
+	-- install with yarn or npm
+	{
+	  "iamcco/markdown-preview.nvim",
+	  cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+	  build = "cd app && yarn install",
+	  init = function()
+		vim.g.mkdp_filetypes = { "markdown" }
+	  end,
+	  ft = { "markdown" },
+	},
+
 	{ 'nvim-lua/plenary.nvim' },
 	{ 'nvim-telescope/telescope.nvim' , tag='0.1.8' },
 	{ 'nvim-telescope/telescope-file-browser.nvim' },
 	{ 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
 
+	{ 'lervag/vimtex' },
 
 	{ 'SirVer/ultisnips', --, event = { 'InsertEnter' } },
 	lazy = false,
@@ -146,17 +158,6 @@ return {
 	-- LSP
 	{
 		"ray-x/lsp_signature.nvim",
-		-- event = "InsertEnter",
-		-- opts = {
-		-- 	bind = true,
-		-- 	handler_opts = {
-		-- 		border = "rounded"
-		-- 	},
-		-- 	hint_prefix = "🧙‍♂️ ",
-		-- },
-		-- config = function(_, opts)
-		-- 	require'lsp_signature'.on_attach(opts)
-		-- end
 	},
 
 	{
@@ -184,9 +185,9 @@ return {
 						},
 					},
 				}
+
 			}
 		end
 	},
+
 }
-
-

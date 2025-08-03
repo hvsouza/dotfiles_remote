@@ -58,20 +58,10 @@ return {
                     node_decremental = "<bs>",
                 },
             },
-            -- incremental_selection = {
-            --     enable = true,
-            --     keymaps = {
-            --         init_selection = "<c-s-i>",
-            --         node_incremental = "<c-s-i>",
-            --         scope_incremental = false,
-            --         node_decremental = "<bs>",
-            --     },
-            -- },
             indent = {
                 enable = true,
                 disable = { "cpp", "c" }
             },
-
         },
     },
 

@@ -79,7 +79,7 @@ export HDWAFFLES='/eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-I
 export WAFFLES='/eos/home-h/hvieirad/waffles/waffles/src/waffles/'
 export WAFFLESANA='/eos/home-h/hvieirad/waffles/analysis/'
 
-export dotfiles='/eos/home-h/hvieirad/dotfiles_remote/'
+export dotfiles='/afs/cern.ch/user/h/hvieirad/dotfiles_remote/'
 
 # to complete tab on variables
 shopt -s direxpand

@@ -30,7 +30,6 @@ vim.opt.showmode = false
 -- vim.opt.clipboard = "unnamedplus"  -- using system clipboard
 -- vim.opt.cc = '80'            -- set an 80 column border for good coding style
 
-
 vim.opt.backspace = "indent,eol,start" -- allow backspace on indent, end of line or insert mode start position
 
 vim.opt.matchpairs:append('<:>') -- add angle brackets to matchpairs
@@ -49,6 +48,7 @@ require('config.undotree')
 
 require('config.keymaps')
 require('config.lazy')
+require('config.lualine')
 require('config.themes')
 require('config.vimfugitive')
 require('config.easyalign')

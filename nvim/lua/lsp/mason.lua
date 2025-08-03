@@ -23,6 +23,7 @@ return {
 			"clangd",
 			"clang-format",
 			"pyright",
+			"lua_ls"
 		},
 	})
 
