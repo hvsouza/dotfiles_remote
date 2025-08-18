@@ -125,10 +125,10 @@ runtmux() {
     # systemctl --user enable --now tmux.service
 }
 
-export VNC_DISPLAY=52927
-export VNC_PORT=58827
+export VNC_DISPLAY=$(( 1 + ${UID}%65535 ))
+export VNC_PORT=$(( 5900 + ${VNC_DISPLAY} ))
 
-# ssh  -L   ${VNC_PORT}:localhost:${VNC_PORT}  hvieirad@lxplus.cern.ch
+# ssh  -L   ${VNC_PORT}:localhost:${VNC_PORT}  user@lxplus.cern.ch
 runvnc () {
     systemctl --user start vncserver@${VNC_DISPLAY}.service
     export DISPLAY=:${VNC_DISPLAY}
