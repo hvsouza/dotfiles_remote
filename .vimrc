@@ -75,6 +75,13 @@ nnoremap <leader>fr :bro old<CR>
 " Moving windows better
 nnoremap <leader>w <c-w>
 
+" Resize window using <ctrl> arrow keys
+nnoremap <C-Up> <cmd>resize +1<cr>
+nnoremap <C-Down> <cmd>resize -1<cr>
+nnoremap <C-Left> <cmd>vertical resize -1<cr>
+nnoremap <C-Right> <cmd>vertical resize +1<cr>
+
+
 " Shortcut for saving
 nnoremap <leader>m :w<CR>
 
@@ -340,3 +347,6 @@ function! <SID>StripTrailingWhitespaces()
 endfunction
 nnoremap <silent> <F5> :call <SID>StripTrailingWhitespaces()<CR>
 
+ 
+imap <silent><script><expr> <C-j> copilot#Accept("\<CR>")
+let g:copilot_no_tab_map = v:true

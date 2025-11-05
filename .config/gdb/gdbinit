@@ -1,4 +1,5 @@
 set history save on
+set history filename ~/.gdb_history
 define print_vector
     if $argc == 2
         set $elem = $arg0.size()
