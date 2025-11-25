@@ -78,6 +78,8 @@ export HDWAFFLES='/eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-I
 
 export WAFFLES='/eos/home-h/hvieirad/waffles/waffles/src/waffles/'
 export WAFFLESANA='/eos/home-h/hvieirad/waffles/analysis/'
+alias sourcewaffles='source /eos/home-h/hvieirad/waffles/waenv/bin/activate'
+alias sourcedaq='cd /eos/home-h/hvieirad/waffles/fddaq-v4.4.7-a9/ && source ./env.sh && cd -'
 
 export dotfiles='/afs/cern.ch/user/h/hvieirad/dotfiles_remote/'
 
@@ -136,15 +138,20 @@ runvnc () {
 stopvnc() {
     systemctl --user stop vncserver@${VNC_DISPLAY}.service
 }
+checkvnc() {
+    systemctl --user status vncserver@${VNC_DISPLAY}.service
+}
 
 runjupyter() {
     token=${1:-""}
-    myport=${2:-$VNC_PORT}
+    add=${2:-0}
+    myport=${3:-$VNC_PORT}
+    myport=$((${myport} + ${add}))
     if [ ! -z "${token}" ]; then
         token=--IdentityProvider.token=\'${token}\'
     fi
     echo $token
-    jupyter-notebook  --no-browser --port $VNC_PORT $token
+    jupyter-lab --no-browser --port $myport $token
 }
 
 updatedisplay() {
