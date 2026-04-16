@@ -17,8 +17,8 @@ alias ncdu='ncdu --color=dark'
 #to show the where I am
 export PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 
-HISTSIZE=60000
-HISTFILESIZE=60000
+HISTSIZE=120000
+HISTFILESIZE=120000
 
 # for tmux italic
 # Install:
@@ -77,9 +77,11 @@ export HDRUCIO='/eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/
 export HDWAFFLES='/eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/PDS_Commissioning/waffles/'
 
 export WAFFLES='/eos/home-h/hvieirad/waffles/waffles/src/waffles/'
+export WAFFLESSCRIPT='/eos/home-h/hvieirad/waffles/waffles/scripts/'
 export WAFFLESANA='/eos/home-h/hvieirad/waffles/analysis/'
 alias sourcewaffles='source /eos/home-h/hvieirad/waffles/waenv/bin/activate'
-alias sourcedaq='cd /eos/home-h/hvieirad/waffles/fddaq-v4.4.7-a9/ && source ./env.sh && cd -'
+# alias sourcedaq='cd /eos/home-h/hvieirad/waffles/fddaq-v4.4.7-a9/ && source ./env.sh && cd -'
+alias sourcedaq='cd /eos/home-h/hvieirad/waffles/fddaq-v5.3.2-a9-1/ && source ./env.sh && cd -'
 
 export dotfiles='/afs/cern.ch/user/h/hvieirad/dotfiles_remote/'
 
@@ -169,6 +171,28 @@ froot() {
     rootfile=$( fastpath $rootfile )
     root -l $rootfile
 }
+
+runvoms() {
+	htgettoken -i dune -a htvaultprod.fnal.gov
+}
+
+updaterucios() {
+	cp -uv /afs/cern.ch/work/h/hvieirad/public/wafflesrucio/waffles/scripts/runlists/*.txt /eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-VD/ruciopaths/
+}
+
+if [ -n "$DISPLAY" ]; then
+    echo "$DISPLAY" > ~/.display.$(hostname -s).env
+fi
+
+refresh_display() {
+    local f=~/.display.$(hostname -s).env
+    if [ -f "$f" ]; then
+        export DISPLAY=$(cat "$f")
+    fi
+}
+if [ -n "$TMUX" ]; then
+    refresh_display
+fi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
