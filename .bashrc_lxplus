@@ -17,8 +17,16 @@ alias ncdu='ncdu --color=dark'
 #to show the where I am
 export PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 
-HISTSIZE=120000
-HISTFILESIZE=120000
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+export HISTCONTROL=ignoreboth
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+
+export HISTSIZE=120000
+export HISTFILESIZE=120000
 
 # for tmux italic
 # Install:
@@ -92,32 +100,6 @@ VNCNUM=4
 export VNCNUM
 export ACTUALLYDISPLAY
 
-
-#VNC stuff
-toogle_vnc(){
-    if [ -z "$1" ]; then
-        :
-    else
-        VNCNUM=$1
-    fi
-
-    if [[ $DISPLAY != "localhost:$VNCNUM" ]]; then
-        if [[ `hostname` == *"lxplus"* ]]; then
-            export DISPLAY=localhost:$VNCNUM
-            if [ `lsof -i -P -n | grep $(expr 5900 + ${VNCNUM}) | wc -l` -eq 0 -o `lsof -i -P -n | grep $(expr 6000 + ${VNCNUM}) | wc -l` -eq 0 ]; then
-                echo "vncserver :$VNCNUM not running. Starting now..."
-                vncserver :$VNCNUM -localhost -bs -geometry 1860x950
-            else
-                echo "vncserver :$VNCNUM already running (hopefully owned by you). Not attempting to start the vncserver"
-            fi
-        fi
-    else
-        echo "Display set to $ACTUALLYDISPLAY"
-        export DISPLAY=$ACTUALLYDISPLAY
-        vncserver -kill :$VNCNUM
-    fi
-
-}
 
 cpls () {
 	readlink -f "$@" | xclip -sel c
